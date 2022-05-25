@@ -15,6 +15,7 @@
         'rest_framework', # подключение DRF базовый
         'rest_framework_simplejwt', # подключение JWT token
         'rest_framework_simplejwt.token_blacklist', # блокирование уже исп. или скомпрометированных токенов
+        'djoser',
         'corsheaders', # включение CORS
         'drf_spectacular' # подключение документации
         ]
@@ -56,6 +57,15 @@
     CORS_ORIGIN_REGEX_WHITELIST = (
         'localhost:3030',
         )
+
+    DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
+}
+
     AUTH_USER_MODEL = 'authentication.User'
 
 1. # Подключение базы данных Postgres.
@@ -150,3 +160,21 @@
  # Настройки coursework_6.urls
 `  path('api/schema/', SpectacularAPIView.as_view(), name='schema') # urls c JSON `
 `  path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema')) # графический интерфкейс  `
+
+5. # Подключение Djoser.
+ # Для настроек пользователей системы
+ poetry add djoser
+ 
+ # Настройки coursework_6.settings
+    INSTALLED_APPS = [
+        ...
+        'djoser',
+        ...
+        ]
+    DJOSER = {
+        'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+        'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+        'ACTIVATION_URL': '#/activate/{uid}/{token}',
+        'SEND_ACTIVATION_EMAIL': True,
+        'SERIALIZERS': {},
+}

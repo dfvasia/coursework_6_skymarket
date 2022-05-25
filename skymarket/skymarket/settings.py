@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+    "djoser",
     "users",
     "ads",
     "drf_spectacular",
@@ -109,6 +110,14 @@ SPECTACULAR_SETTINGS = {
 }
 # TODO здесь мы настраиваем Djoser
 DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserRegistrationSerializer',
+    },
+    'LOGIN_FIELD': 'email',
 }
 
 # Database
