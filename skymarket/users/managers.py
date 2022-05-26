@@ -3,6 +3,7 @@ from django.contrib.auth.models import (BaseUserManager)
 # TODO Поищите эту информацию в рекомендациях к проекту
 
 
+
 class UserManager(BaseUserManager):
     """
     функция создания пользователя — в нее мы передаем обязательные поля
@@ -30,6 +31,7 @@ class UserManager(BaseUserManager):
         Функция для создания суперпользователя — с ее помощью мы создаем администратора
         это можно сделать с помощью команды createsuperuser
         """
+
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -40,7 +42,7 @@ class UserManager(BaseUserManager):
             last_name=last_name,
             phone=phone,
             password=password,
-            role="admin",
+            role=1,
             **extra_fields
 
         )

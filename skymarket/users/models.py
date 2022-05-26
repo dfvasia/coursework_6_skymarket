@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
@@ -7,10 +7,10 @@ from django.utils.translation import gettext_lazy as _
 from users.managers import UserManager
 
 
-class UserRoles:
+class UserRoles(models.Model):
     # TODO закончите enum-класс для пользователя
-    TYPE_ADMIN = "A"
-    TYPE_USER = "U"
+    TYPE_ADMIN = "admin"
+    TYPE_USER = "user"
     STATUS_ROLE = ((TYPE_ADMIN, "admin"), (TYPE_USER, "user"))
 
     user_role = models.SlugField(max_length=20, unique=True, default=TYPE_USER, blank=False, null=False, choices=STATUS_ROLE)
@@ -19,13 +19,13 @@ class UserRoles:
         return self.user_role
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractUser):
     username = None
     email = models.EmailField(_('email_address'), unique=True, max_length=200)
     date_joined = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    role = models.ForeignKey('UserRoles', on_delete=models.PROTECT)
+    role = models.ForeignKey(UserRoles, on_delete=models.CASCADE)
     phone = PhoneNumberField()
 
     USERNAME_FIELD = 'email'
