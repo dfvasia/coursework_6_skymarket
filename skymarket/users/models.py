@@ -18,10 +18,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(_('email_address'), unique=True, max_length=200)
+    email = models.EmailField(_('почтовый ящик'), unique=True, max_length=200)
     date_joined = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
-    is_active = models.BooleanField(default=False, verbose_name='Статус')
-    role = models.CharField(max_length=15, blank=False, null=False, default=UserRoles.USER, verbose_name='Группа доступа')
+    is_active = models.BooleanField(default=True, verbose_name='Статус')
+    role = models.CharField(max_length=15, blank=False, null=False, default='user', verbose_name='Группа доступа')
     phone = PhoneNumberField(verbose_name='Телефон')
     user_permissions = models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='Разрешения')
     groups = models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='Группы')
