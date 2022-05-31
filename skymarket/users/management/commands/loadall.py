@@ -12,6 +12,7 @@ class Command(BaseCommand):
         "users",
         "ad",
         "comments",
+        "userroles",
     ]
 
     def handle(self, *args, **options):
