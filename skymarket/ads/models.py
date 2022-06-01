@@ -13,6 +13,15 @@ class Ad(models.Model):
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Объявление"
+        verbose_name_plural = "Объявления"
+        ordering = ['pk']
+
+
 
 class Comment(models.Model):
     text = models.CharField(max_length=128, blank=False, null=False, verbose_name='Текст сообщения')

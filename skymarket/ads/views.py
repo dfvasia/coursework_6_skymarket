@@ -1,13 +1,64 @@
-from rest_framework import pagination, viewsets
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from ads.models import Ad
+from ads.serializers import AdSerializer
+from users.models import User
 
 
-class AdPagination(pagination.PageNumberPagination):
-    pass
-
-
-# TODO view функции. Предлагаем Вам следующую структуру - но Вы всегда можете использовать свою
 class AdViewSet(viewsets.ModelViewSet):
-    pass
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+
+    permission_classes_by_action = {'create': [IsAuthenticated],
+                                    'list': [AllowAny],
+                                    'retrieve': [IsAuthenticated],
+                                    'update': [IsAuthenticated],
+                                    'perform_update': [IsAuthenticated],
+                                    'destroy': [IsAuthenticated],
+                                    }
+
+    def list(self, request, *args, **kwargs):
+
+        adv_title = request.GET.get('title', None)
+        adv_comment = request.GET.get('comment', None)
+
+        if adv_title:
+            self.queryset = self.queryset.filter(
+                title__icontains=adv_title
+            )
+        if adv_comment:
+            self.queryset = self.queryset.filter(
+                author__comment__ad_id__in=[i.id for i in
+                                                     User.objects.all().filter(name__icontains=adv_comment)]
+            )
+        return super().list(request, *args, **kwargs)
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return [permission() for permission in self.permission_classes]
+
+
+class AdMeViewSet(viewsets.ModelViewSet):
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+
+    permission_classes_by_action = {'create': [IsAuthenticated],
+                                    'list': [AllowAny],
+                                    'retrieve': [IsAuthenticated],
+                                    'update': [IsAuthenticated],
+                                    'perform_update': [IsAuthenticated],
+                                    'destroy': [IsAuthenticated],
+                                    }
+
+    def list(self, request, *args, **kwargs):
+        adv_user = request.user.pk
+        self.queryset = self.queryset.filter(
+            author_id=adv_user)
+
+        return super().list(request, *args, **kwargs)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
