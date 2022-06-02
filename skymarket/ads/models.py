@@ -22,9 +22,17 @@ class Ad(models.Model):
         ordering = ['pk']
 
 
-
 class Comment(models.Model):
     text = models.CharField(max_length=128, blank=False, null=False, verbose_name='Текст сообщения')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='ИД пользователя комментария')
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name='ИД сообщения')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+        ordering = ['pk']
+

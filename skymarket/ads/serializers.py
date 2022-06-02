@@ -1,15 +1,20 @@
 from rest_framework import serializers
 
 
-# TODO Сериалайзеры. Предлагаем Вам такую структуру, однако вы вправе использовать свою
 from rest_framework.validators import UniqueValidator
 
-from ads.models import Ad
+from ads.models import Ad, Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    # TODO сериалайзер для модели
-    pass
+    text = serializers.CharField(
+        max_length=128,
+        min_length=5,
+    )
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
 
 
 class AdSerializer(serializers.ModelSerializer):

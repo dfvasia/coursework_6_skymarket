@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from ads.models import Ad
-from ads.serializers import AdSerializer
+from ads.models import Ad, Comment
+from ads.serializers import AdSerializer, CommentSerializer
 from users.models import User
 
 
@@ -17,6 +17,9 @@ class AdViewSet(viewsets.ModelViewSet):
                                     'perform_update': [IsAuthenticated],
                                     'destroy': [IsAuthenticated],
                                     }
+
+    def retrieve(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
 
@@ -62,5 +65,6 @@ class AdMeViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    pass
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
