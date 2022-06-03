@@ -32,8 +32,7 @@ class AdViewSet(viewsets.ModelViewSet):
             )
         if adv_comment:
             self.queryset = self.queryset.filter(
-                author__comment__ad_id__in=[i.id for i in
-                                                     User.objects.all().filter(name__icontains=adv_comment)]
+                author__comment__ad_id__in=User.objects.filter(name__icontains=adv_comment).get().pk
             )
         return super().list(request, *args, **kwargs)
 
