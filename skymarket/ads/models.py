@@ -10,7 +10,7 @@ class Ad(models.Model):
     price = models.PositiveSmallIntegerField(null=False, blank=False, verbose_name='Стоимость')
     description = models.CharField(max_length=128, blank=False, null=False, verbose_name='Текст объявления')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='ИД пользователя')
-    created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
@@ -26,7 +26,7 @@ class Comment(models.Model):
     text = models.CharField(max_length=128, blank=False, null=False, verbose_name='Текст сообщения')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='ИД пользователя комментария')
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE, verbose_name='ИД сообщения')
-    created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
     def __str__(self):
         return self.text
