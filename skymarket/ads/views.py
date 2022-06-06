@@ -32,7 +32,8 @@ class AdViewSet(viewsets.ModelViewSet):
             )
         if adv_comment:
             self.queryset = self.queryset.filter(
-                author__comment__ad_id__in=User.objects.filter(name__icontains=adv_comment).get().pk
+                comment__author_id__in=[(User.objects.filter(
+                    email__icontains=adv_comment).values('id').get()).get('id')]
             )
         return super().list(request, *args, **kwargs)
 
